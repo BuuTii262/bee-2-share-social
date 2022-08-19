@@ -22,34 +22,40 @@ export const shareLinks = ({
   linkUrl,
   socialMedia,
 }: Type) => {
-  switch (socialMedia) {
-    case "Telegram":
-      return "tg://msg?text=" + encodeURIComponent(linkUrl);
-
-    case "Facebook":
-      return "fb://share/?u=" + encodeURIComponent(linkUrl);
-
-    case "WhatsApp":
-      return (
-        "https://api.whatsapp.com/send?text=" +
-        encodeURIComponent(text + linkUrl)
-      );
-
-    case "Twitter":
-      return (
-        "https://twitter.com/home?status=" + encodeURIComponent(text + linkUrl)
-      );
-
-    case "Email":
-      return (
-        `mailto:?subject=${emailSubject || text || linkUrl}&body=` +
-        encodeURIComponent(text + linkUrl)
-      );
-
-    case "Message":
+  let app = socialMedia.toLowerCase();
+  let telegramMsg: string = "tg://msg?text=" + encodeURIComponent(linkUrl);
+  let facebookMsg: string = "fb://share/?u=" + encodeURIComponent(linkUrl);
+  let whatsAppMsg: string =
+    "https://api.whatsapp.com/send?text=" + encodeURIComponent(text + linkUrl);
+  let twitterMsg: string =
+    "https://twitter.com/home?status=" + encodeURIComponent(text + linkUrl);
+  let emailMsg: string =
+    `mailto:?subject=${emailSubject || text || linkUrl}&body=` +
+    encodeURIComponent(text + linkUrl);
+  switch (app) {
+    case "telegram":
+      return telegramMsg;
+    case "facebook":
+      return facebookMsg;
+    case "whatsapp":
+      return whatsAppMsg;
+    case "twitter":
+      return twitterMsg;
+    case "email":
+      return emailMsg;
+    case "message":
       return smsValue(text + linkUrl);
-
     default:
       break;
   }
 };
+
+let social = {
+  emailSubject: "Hello email subject",
+  text: "Hello text ",
+  linkUrl: "www.google.com",
+  socialMedia: "twitter",
+};
+let limk = shareLinks(social);
+
+console.log(limk);
